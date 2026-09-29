@@ -190,7 +190,6 @@
         const total = allNumbers.length;
         const deselectedCount = deselectedNumbers.length;
         const selectedCount = total - deselectedCount;
-        const money = count * 1.25;
 
         document.getElementById('totalSelected').innerText = selectedCount;
         document.getElementById('totalDeselected').innerText = deselectedCount;
@@ -200,6 +199,7 @@
     function saveToGoogleSheet() {
         const sessionId = document.getElementById('sessionIdInput').value;
         const selectedNumbers = allNumbers.filter(num => !deselectedNumbers.includes(num));
+        const money = selectedNumbers * 1.25;
         
         const payload = {
             id: sessionId,
