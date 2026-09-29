@@ -213,9 +213,9 @@
 
         console.log("Submitting payload structure:", payload);
         
-        const GOOGLE_SCRIPT_WEBAPP_URL = "https://docs.google.com/spreadsheets/d/1qH8zdI5xvkm8jN38xC7r-SZ1v3x6Q-tVIFjXwGW7Is4/edit?gid=0#gid=0"; 
+        const GOOGLE_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzqdSPuNXmFJVtz7m9dC4NSQ047s55MiVUDSw7XmkGHVHiHDFxxEbnki0K7OjHSZYEh/exec"; 
 
-        if (GOOGLE_SCRIPT_WEBAPP_URL === "https://docs.google.com/spreadsheets/d/1qH8zdI5xvkm8jN38xC7r-SZ1v3x6Q-tVIFjXwGW7Is4/edit?gid=0#gid=0") {
+        if (GOOGLE_SCRIPT_WEBAPP_URL === "https://script.google.com/macros/s/AKfycbzqdSPuNXmFJVtz7m9dC4NSQ047s55MiVUDSw7XmkGHVHiHDFxxEbnki0K7OjHSZYEh/exec") {
             alert("Local Simulation Active!\n\nPayload prepared for Google Sheets:\n" + JSON.stringify(payload, null, 2));
             return;
         }
