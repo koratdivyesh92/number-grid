@@ -197,39 +197,36 @@
     }
 
     function saveToGoogleSheet() {
-        const sessionId = document.getElementById('sessionIdInput').value;
-        const selectedNumbers = allNumbers.filter(num => !deselectedNumbers.includes(num));
-        
-        const payload = {
-            id: sessionId,
-            totalSelected: selectedNumbers.length,
-            totalDeselected: deselectedNumbers.length,
-            deselectedList: deselectedNumbers,
-            timestamp: new Date().toISOString()
-        };
+    const sessionId = document.getElementById('sessionIdInput').value;
+    const selectedNumbers = allNumbers.filter(num => !deselectedNumbers.includes(num));
+    
+    const payload = {
+        id: sessionId,
+        totalSelected: selectedNumbers.length,
+        totalDeselected: deselectedNumbers.length,
+        deselectedList: deselectedNumbers,
+        timestamp: new Date().toISOString()
+    };
 
-        // --- PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW ---
-        const GOOGLE_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzswBX2cU7bm9QD-axbZvlJytlvhrB4SUsMZVVMNe6U7qkoQsBA852yZZMX2jChwzQOpA/exec"; 
+    // PASTE YOUR ACTUAL GOOGLE APPS SCRIPT WEB APP URL BETWEEN THE QUOTES BELOW:
+    const GOOGLE_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzswBX2cU7bm9QD-axbZvlJytlvhrB4SUsMZVVMNe6U7qkoQsBA852yZZMX2jChwzQOpA/exec"; 
 
-        if (GOOGLE_SCRIPT_WEBAPP_URL === "https://script.google.com/macros/s/AKfycbzswBX2cU7bm9QD-axbZvlJytlvhrB4SUsMZVVMNe6U7qkoQsBA852yZZMX2jChwzQOpA/exec") {
-            alert("Local Simulation Active!\n\nPayload prepared for Google Sheets:\n" + JSON.stringify(payload, null, 2));
-            return;
-        }
+    // The safety simulation block has been removed so it will force an execution attempt
+    fetch(GOOGLE_SCRIPT_WEBAPP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+    })
+    .then(() => {
+        alert("Success! Data sent to Google Sheet.");
+    })
+    .catch(err => {
+        console.error("Transmission error:", err);
+        alert("Error sending data to Google Sheet.");
+    });
+}
 
-        fetch(GOOGLE_SCRIPT_WEBAPP_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        })
-        .then(() => {
-            alert("Success! Data saved to Google Sheet.");
-        })
-        .catch(err => {
-            console.error("Transmission error:", err);
-            alert("Error sending data to Google Sheet.");
-        });
-    }
 
     window.onload = function() {
         generateGrid();
