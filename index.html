@@ -198,11 +198,11 @@
 
     function saveToGoogleSheet() {
         const sessionId = document.getElementById('sessionIdInput').value;
-        const _from = document.getElementById('fromInput').value;
-        const _to = document.getElementById('toInput').value;
-        console.log("from:%d\nto:%d",_from,_to);
+        const _from = parseInt(document.getElementById('fromInput').value);
+        const _to = parseInt(document.getElementById('toInput').value);
         const selectedNumbers = allNumbers.filter(num => !deselectedNumbers.includes(num));
         const _money = selectedNumbers * 1.25;
+        console.log("from:%d\nto:%d\nmoney:%d",_from,_to,_money);
         
         const payload = {
             id: sessionId,
@@ -210,7 +210,7 @@
             to: _to.length,
             totalSelected: selectedNumbers.length,
             totalDeselected: deselectedNumbers.length,
-            money: _money,
+            money: _money.length,
             deselectedList: deselectedNumbers,
             timestamp: new Date().toISOString()
         };
