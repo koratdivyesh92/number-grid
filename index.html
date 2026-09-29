@@ -122,8 +122,6 @@
     </div>
 
     <h2>Interactive Grid</h2>
-
-    <!-- The container where the generated grid will appear -->
     <div class="grid-container" id="gridContainer"></div>
 
     <div class="stats-panel">
@@ -138,8 +136,8 @@
 </div>
 
 <script>
-    let allNumbers = [];
-    let deselectedNumbers = [];
+    let allNumbers =;
+    let deselectedNumbers =;
 
     function generateGrid() {
         const fromVal = parseInt(document.getElementById('fromInput').value);
@@ -147,8 +145,8 @@
         const container = document.getElementById('gridContainer');
         
         container.innerHTML = '';
-        allNumbers = [];
-        deselectedNumbers = [];
+        allNumbers =;
+        deselectedNumbers =;
 
         if (isNaN(fromVal) || isNaN(toVal)) {
             alert('Please enter valid numbers.');
@@ -195,7 +193,6 @@
 
         document.getElementById('totalSelected').innerText = selectedCount;
         document.getElementById('totalDeselected').innerText = deselectedCount;
-        
         document.getElementById('deselectedList').innerText = deselectedCount > 0 ? deselectedNumbers.join(', ') : '-';
     }
 
@@ -211,11 +208,10 @@
             timestamp: new Date().toISOString()
         };
 
-        console.log("Submitting payload structure:", payload);
-        
-        const GOOGLE_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzqdSPuNXmFJVtz7m9dC4NSQ047s55MiVUDSw7XmkGHVHiHDFxxEbnki0K7OjHSZYEh/exec"; 
+        // --- PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW ---
+        const GOOGLE_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzswBX2cU7bm9QD-axbZvlJytlvhrB4SUsMZVVMNe6U7qkoQsBA852yZZMX2jChwzQOpA/exec"; 
 
-        if (GOOGLE_SCRIPT_WEBAPP_URL === "https://script.google.com/macros/s/AKfycbzqdSPuNXmFJVtz7m9dC4NSQ047s55MiVUDSw7XmkGHVHiHDFxxEbnki0K7OjHSZYEh/exec") {
+        if (GOOGLE_SCRIPT_WEBAPP_URL === "https://script.google.com/macros/s/AKfycbzswBX2cU7bm9QD-axbZvlJytlvhrB4SUsMZVVMNe6U7qkoQsBA852yZZMX2jChwzQOpA/exec") {
             alert("Local Simulation Active!\n\nPayload prepared for Google Sheets:\n" + JSON.stringify(payload, null, 2));
             return;
         }
@@ -227,11 +223,11 @@
             body: JSON.stringify(payload)
         })
         .then(() => {
-            alert("Success! Selection data routed to Google Sheets pipeline.");
+            alert("Success! Data saved to Google Sheet.");
         })
         .catch(err => {
-            console.error("Pipeline transmission error:", err);
-            alert("Error sending data to connection backend.");
+            console.error("Transmission error:", err);
+            alert("Error sending data to Google Sheet.");
         });
     }
 
@@ -239,6 +235,5 @@
         generateGrid();
     };
 </script>
-
 </body>
 </html>
