@@ -3,322 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Button Selector</title>
+    <title>Dynamic Grid Generator</title>
     <style>
-        :root {
-            --primary-pastel: #b4c9e7; /* Soft Pastel Blue (Selected) */
-            --bg-deselected: #f3f4f6;  /* Very Light Grey (Deselected) */
-            --text-selected: #1e3a8a;  /* Deep Royal Blue text */
-            --text-deselected: #6b7280;/* Slate Grey text */
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 15px;
-            background-color: #fafafa;
-            color: #1f2937;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
         }
-
-        .container {
-            max-width: 500px;
+        .dashboard-container {
+            max-width: 600px;
             margin: 0 auto;
-            background: #ffffff;
+            background: #fff;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
         h2 {
             margin-top: 0;
-            text-align: center;
-            font-size: 1.25rem;
-            color: #111827;
+            color: #333;
         }
-
         .input-group {
-            display: flex;
-            gap: 10px;
             margin-bottom: 15px;
         }
-
-        .field {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+        .input-group label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
         }
-
-        label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-            color: #4b5563;
+        .input-group input {
+            padding: 6px;
+            width: 120px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
-
-        input {
-            padding: 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        input:focus {
-            border-color: #3b82f6;
-        }
-
-        .action-btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #3b82f6;
-            color: white;
+        button {
+            padding: 8px 16px;
             border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-bottom: 15px;
+            border-radius: 4px;
             cursor: pointer;
+            font-weight: bold;
         }
-
-        /* Ultra-compact 10-column mobile grid architecture */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 4px;
-            margin-top: 15px;
-            margin-bottom: 20px;
+        .btn-generate {
+            background-color: #007bff;
+            color: white;
+            margin-right: 10px;
         }
-
+        .btn-submit {
+            background-color: #28a745;
+            color: white;
+        }
+        .grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 5px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
         .grid-btn {
-            aspect-ratio: 1;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 0.85rem;
+            background-color: #28a745;
+            color: white;
+            border: none;
             border-radius: 4px;
-            border: none;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.15s ease, color 0.15s ease;
             user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
-
-        /* Default starting state: Selected (Pastel Blue) */
-        .grid-btn.selected {
-            background-color: var(--primary-pastel);
-            color: var(--text-selected);
-        }
-
-        /* Clicked state: Deselected (Grey) */
         .grid-btn.deselected {
-            background-color: var(--bg-deselected);
-            color: var(--text-deselected);
+            background-color: #6c757d;
         }
-
-        .metrics {
-            background-color: #f9fafb;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
+        .stats-panel {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 4px;
             margin-bottom: 15px;
-            font-size: 0.9rem;
         }
-
-        .metric-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
+        .stats-panel p {
+            margin: 5px 0;
+            color: #495057;
         }
-
-        .metric-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .bold-val {
-            font-weight: 700;
-        }
-
-        .list-box {
+        .list-container {
             word-break: break-all;
-            color: #ef4444; /* Highlights deselected list in soft muted red text */
-        }
-
-        .button-bar {
-            display: flex;
-            gap: 10px;
-        }
-
-        .submit-btn {
-            flex: 2;
-            padding: 12px;
-            background-color: #10b981;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .reset-btn {
-            flex: 1;
-            padding: 12px;
-            background-color: #6b7280;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
+            max-height: 60px;
+            overflow-y: auto;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Dynamic Number Dashboard</h2>
+<div class="dashboard-container">
+    <h2>Grid Configuration</h2>
     
     <div class="input-group">
-        <div class="field">
-            <label for="session-id">ID</label>
-            <input type="text" id="session-id" placeholder="e.g., User1">
-        </div>
-        <div class="field">
-            <label for="num-from">From</label>
-            <input type="number" id="num-from" value="1">
-        </div>
-        <div class="field">
-            <label for="num-to">To</label>
-            <input type="number" id="num-to" value="50">
-        </div>
+        <label for="sessionIdInput">ID / Session Name</label>
+        <input type="text" id="sessionIdInput" value="Session1">
     </div>
 
-    <button class="action-btn" onclick="generateGrid()">Generate Grid</button>
-
-    <div id="number-grid" class="grid"></div>
-
-    <div class="metrics">
-        <div class="metric-row">
-            <span>Total Selected:</span>
-            <span id="selected-count" class="bold-val">0</span>
-        </div>
-        <div class="metric-row">
-            <span>Total Deselected:</span>
-            <span id="deselected-count" class="bold-val">0</span>
-        </div>
-        <div class="metric-row" style="flex-direction: column; margin-top: 8px;">
-            <span style="font-weight: 600;">Deselected Numbers List:</span>
-            <span id="deselected-list" class="bold-val list-box">None</span>
-        </div>
+    <div class="input-group">
+        <label for="fromInput">From Number</label>
+        <input type="number" id="fromInput" value="1">
+    </div>
+    
+    <div class="input-group">
+        <label for="toInput">To Number</label>
+        <input type="number" id="toInput" value="50">
+    </div>
+    
+    <div>
+        <button class="btn-generate" onclick="generateGrid()">Generate Grid</button>
     </div>
 
-    <div class="button-bar">
-        <button class="reset-btn" onclick="resetGrid()">Reset All</button>
-        <button class="submit-btn" onclick="submitToGoogleSheets()">Submit Data</button>
+    <h2>Interactive Grid</h2>
+
+    <!-- The container where the generated grid will appear -->
+    <div class="grid-container" id="gridContainer"></div>
+
+    <div class="stats-panel">
+        <p><strong>Total Selected Count:</strong> <span id="totalSelected">0</span></p>
+        <p><strong>Total Deselected Count:</strong> <span id="totalDeselected">0</span></p>
+        <p><strong>Deselected List:</strong> <span id="deselectedList" class="list-container">-</span></p>
+    </div>
+
+    <div>
+        <button class="btn-submit" onclick="saveToGoogleSheet()">Save Selections to Google Sheet</button>
     </div>
 </div>
 
 <script>
-    // PASTE YOUR LIVE GOOGLE APPS SCRIPT WEB APP URL BETWEEN THE QUOTES BELOW
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAsuEVI56cMfcDNUakedxB8Yf9PR_zb8ckd2V4OWzIMKtHmV2OAQIw_5NPJyDN0HWW/exec";
-
-    let activeRange = [];
+    let allNumbers = [];
+    let deselectedNumbers = [];
 
     function generateGrid() {
-        const fromVal = parseInt(document.getElementById('num-from').value);
-        const toVal = parseInt(document.getElementById('num-to').value);
-        const gridContainer = document.getElementById('number-grid');
+        const fromVal = parseInt(document.getElementById('fromInput').value);
+        const toVal = parseInt(document.getElementById('toInput').value);
+        const container = document.getElementById('gridContainer');
         
-        gridContainer.innerHTML = '';
-        activeRange = [];
+        container.innerHTML = '';
+        allNumbers = [];
+        deselectedNumbers = [];
 
-        if (isNaN(fromVal) || isNaN(toVal) || fromVal > toVal) {
-            alert("Please enter a valid numeric range.");
+        if (isNaN(fromVal) || isNaN(toVal)) {
+            alert('Please enter valid numbers.');
+            updateStats();
+            return;
+        }
+        if (fromVal > toVal) {
+            alert('"From" number cannot be greater than "To" number.');
+            updateStats();
             return;
         }
 
-        // Populate array with sequential numbers and instantiate as 'selected' by default
         for (let i = fromVal; i <= toVal; i++) {
-            activeRange.push({ number: i, selected: true });
-        }
-
-        activeRange.forEach((item, index) => {
-            const btn = document.createElement('button');
-            btn.className = 'grid-btn selected';
-            btn.innerText = item.number;
+            allNumbers.push(i);
             
-            // Toggle selection state mapping on mobile touch/click
-            btn.addEventListener('click', () => {
-                activeRange[index].selected = !activeRange[index].selected;
-                if (activeRange[index].selected) {
-                    btn.className = 'grid-btn selected';
+            const btn = document.createElement('button');
+            btn.className = 'grid-btn';
+            btn.innerText = i;
+            btn.setAttribute('data-num', i);
+            
+            btn.onclick = function() {
+                const num = parseInt(this.getAttribute('data-num'));
+                if (this.classList.contains('deselected')) {
+                    this.classList.remove('deselected');
+                    deselectedNumbers = deselectedNumbers.filter(n => n !== num);
                 } else {
-                    btn.className = 'grid-btn deselected';
+                    this.classList.add('deselected');
+                    deselectedNumbers.push(num);
+                    deselectedNumbers.sort((a, b) => a - b);
                 }
-                calculateMetrics();
-            });
+                updateStats();
+            };
+            
+            container.appendChild(btn);
+        }
 
-            gridContainer.appendChild(btn);
-        });
-
-        calculateMetrics();
+        updateStats();
     }
 
-    function calculateMetrics() {
-        const selected = activeRange.filter(item => item.selected).map(item => item.number);
-        const deselected = activeRange.filter(item => !item.selected).map(item => item.number);
+    function updateStats() {
+        const total = allNumbers.length;
+        const deselectedCount = deselectedNumbers.length;
+        const selectedCount = total - deselectedCount;
 
-        document.getElementById('selected-count').innerText = selected.length;
-        document.getElementById('deselected-count').innerText = deselected.length;
+        document.getElementById('totalSelected').innerText = selectedCount;
+        document.getElementById('totalDeselected').innerText = deselectedCount;
         
-        document.getElementById('deselected-list').innerText = deselected.length > 0 ? deselected.join(', ') : 'None';
+        document.getElementById('deselectedList').innerText = deselectedCount > 0 ? deselectedNumbers.join(', ') : '-';
     }
 
-    // Instantly selects all items back to starting states
-    function resetGrid() {
-        activeRange.forEach(item => item.selected = true);
-        const buttons = document.querySelectorAll('.grid-btn');
-        buttons.forEach(btn => btn.className = 'grid-btn selected');
-        calculateMetrics();
-    }
-
-    function submitToGoogleSheets() {
-        const idVal = document.getElementById('session-id').value.trim();
-        if (!idVal) {
-            alert("Please enter an ID before submitting.");
-            return;
-        }
-
-        if (activeRange.length === 0) {
-            alert("Please generate a grid before submitting data.");
-            return;
-        }
-
-        if (GOOGLE_SCRIPT_URL.includes("YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL")) {
-            alert("Configuration Error: Please update the script URL on line 160 with your live deployment API string.");
-            return;
-        }
-
-        const selectedCount = activeRange.filter(item => item.selected).length;
-        const deselectedCount = activeRange.filter(item => !item.selected).length;
-        const deselectedList = activeRange.filter(item => !item.selected).map(item => item.number).join(', ');
-
+    function saveToGoogleSheet() {
+        const sessionId = document.getElementById('sessionIdInput').value;
+        const selectedNumbers = allNumbers.filter(num => !deselectedNumbers.includes(num));
+        
         const payload = {
-            id: idVal,
-            count: "Selected: " + selectedCount + " | Deselected: " + deselectedCount,
-            selections: deselectedList || "None"
+            id: sessionId,
+            totalSelected: selectedNumbers.length,
+            totalDeselected: deselectedNumbers.length,
+            deselectedList: deselectedNumbers,
+            timestamp: new Date().toISOString()
         };
 
-        // Post JSON block to the endpoint
-        fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors', 
-            cache: 'no-cache',
-            headers: { 'Content-Type': 'application/json' },
+        console.log("Submitting payload structure:", payload);
+        
+        const GOOGLE_SCRIPT_WEBAPP_URL = "https://docs.google.com/spreadsheets/d/1qH8zdI5xvkm8jN38xC7r-SZ1v3x6Q-tVIFjXwGW7Is4/edit?gid=0#gid=0"; 
+
+        if (GOOGLE_SCRIPT_WEBAPP_URL === "https://docs.google.com/spreadsheets/d/1qH8zdI5xvkm8jN38xC7r-SZ1v3x6Q-tVIFjXwGW7Is4/edit?gid=0#gid=0") {
+            alert("Local Simulation Active!\n\nPayload prepared for Google Sheets:\n" + JSON.stringify(payload, null, 2));
+            return;
+        }
+
+        fetch(GOOGLE_SCRIPT_WEBAPP_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         })
         .then(() => {
-            alert("Data logged successfully!");
+            alert("Success! Selection data routed to Google Sheets pipeline.");
         })
         .catch(err => {
+            console.error("Pipeline transmission error:", err);
+            alert("Error sending data to connection backend.");
+        });
+    }
+
+    window.onload = function() {
+        generateGrid();
+    };
+</script>
+
+</body>
+</html>
